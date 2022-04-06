@@ -6,14 +6,14 @@ import numpy as np
 class MovingAvg(nn.Module):
     def __init__(self, input_shape: tuple, window_size: int):
         """
-        Takes a batch of sequences with [batch size, channels, length of time series] and smoothes the sequences.
+        Takes a batch of sequences with [batch size, channels, seq_len] and smoothes the sequences.
         Output size of moving average is: time series length - window size + 1
 
         Args:
             input_shape (tuple): input shape for the transformation layer in format (n_channels, length_of_timeseries)
             window_size (int): window size with which the time series is smoothed
         """
-        assert len(input_shape) == 2, "Expecting shape in format (n_channels, length of timeseries)!"
+        assert len(input_shape) == 2, "Expecting shape in format (n_channels, seq_len)!"
         super(MovingAvg, self).__init__()
 
         self.num_dim, self.length_x = input_shape
@@ -41,14 +41,14 @@ class MovingAvg(nn.Module):
 class Downsample(nn.Module):
     def __init__(self, input_shape: tuple, sample_rate: int):
         """
-        Takes a batch of sequences with [batch size, channels, length of time series] and down-samples with sample
+        Takes a batch of sequences with [batch size, channels, seq_len] and down-samples with sample
         rate k. Hence, every k-th element of the original time series is kept.
 
         Args:
             input_shape (tuple): input shape for the transformation layer in format (n_channels, length_of_timeseries)
             sample_rate (int): sample rate with which the time series should be down-sampled
         """
-        assert len(input_shape) == 2, "Expecting shape in format (n_channels, length of time series)!"
+        assert len(input_shape) == 2, "Expecting shape in format (n_channels, seq_len)!"
         super(Downsample, self).__init__()
 
         self.sample_rate = sample_rate
@@ -87,10 +87,10 @@ class Identity(nn.Module):
         Identity mapping without any transformation (wrapper class).
 
         Args:
-            input_shape (tuple): input shape for the transformation layer in format (n_channels, length_of_timeseries)
+            input_shape (tuple): input shape for the transformation layer in format (n_channels, seq_len)
         """
         super(Identity, self).__init__()
-        assert len(input_shape) == 2, "Expecting shape in format (n_channels, length of time series)!"
+        assert len(input_shape) == 2, "Expecting shape in format (n_channels, seq_len)!"
         self.output_shape = input_shape
 
     def forward(self, x):
