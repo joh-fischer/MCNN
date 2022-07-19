@@ -127,7 +127,7 @@ class MCNN(nn.Module):
                                                     kernel_size=self.kernel_size, padding='same'))
         branch.add_module(name + '_activation', self.local_conv_activation())
         # local max pooling (ensure that outputs all have length equal to pool factor)
-        pool_size = int(int(branch[0].output_shape[1]) / self.pool_factor)
+        pool_size = int(np.ceil(branch[0].output_shape[1] / self.pool_factor))
         assert pool_size > 1, "ATTENTION: pool_size can not be 0 or 1, as the lengths are then not equal" \
                               "for concatenation!"
         branch.add_module(name + '_pool', nn.MaxPool1d(pool_size))  # default stride equal to pool size
