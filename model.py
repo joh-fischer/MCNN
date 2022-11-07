@@ -130,7 +130,7 @@ class MCNN(nn.Module):
         pool_size = int(np.ceil(branch[0].output_shape[1] / self.pool_factor))
         assert pool_size > 1, "ATTENTION: pool_size can not be 0 or 1, as the lengths are then not equal" \
                               "for concatenation!"
-        branch.add_module(name + '_pool', nn.MaxPool1d(pool_size))  # default stride equal to pool size
+        branch.add_module(name + '_pool', nn.MaxPool1d(pool_size), ceil_mode=True)  # default stride equal to pool size
 
         return branch
 
